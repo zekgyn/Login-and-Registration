@@ -3,21 +3,12 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QApplication
 from PyQt5.uic import loadUi
 
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import auth
-from firebase_admin.auth import UserRecord
 
 
-
-cred = credentials.Certificate("firebaseConfig.json")
-
-app = firebase_admin.initialize_app(cred)
-
-class Chat(QDialog):
+class Welcome(QDialog):
     def __init__(self):
-        super(Chat,self).__init__()
-        loadUi("chat.ui",self)
+        super(Welcome,self).__init__()
+        loadUi("welcome.ui",self)
 
 
 class Login(QDialog):
@@ -34,19 +25,19 @@ class Login(QDialog):
         email=self.emailinput.text()
         password=self.psswd.text()
         try:
-            # auth.sign_in_with_email_and_password(email = email,password = password)
-            # auth.signupNewUser(email = email,password = password)           
+                       
             # print(email,password)
-            chat = Chat()
-            widget.addWidget(chat)
+            welcome = Welcome()
+            widget.addWidget(welcome)
             widget.setCurrentIndex(widget.currentIndex() + 1)
             
         except:
             self.emailerror.setVisible(True)
+
     def gotocreate(self):
         createacc=CreateAcc()
         widget.addWidget(createacc)
-        widget.setCurrentIndex(widget.currentIndex()+1)
+        widget.setCurrentIndex(widget.currentIndex() +1 )
 
     def closeIt(self): 
         widget.close()
@@ -67,26 +58,19 @@ class CreateAcc(QDialog):
         if self.pswdr.text()==self.repswdr.text():
             password=self.pswdr.text()
             try:
-                # auth.create_user_with_email_and_password(email,password)
-                auth.create_user(email = email, password = password)
+               
                 # print(email,password)
                 login = Login()
                 widget.addWidget(login)
-                widget.setCurrentIndex(widget.currentIndex() + 1)
+                widget.setCurrentIndex(widget.currentIndex() - 1)
             except:
                 self.emailerror.setVisible(True)
         else:
             self.pswderror.setVisible(True)
 
-
-
     def closeIt(self): 
         self.close()
         widget.setCurrentIndex(widget.currentIndex() - 1)
-
-
-
-
 
 if __name__ == "__main__":
     app=QApplication(sys.argv)
